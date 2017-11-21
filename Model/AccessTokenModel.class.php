@@ -4,11 +4,11 @@
  * author: Jayin <tonjayin@gmail.com>
  */
 
-namespace Auth\Model\AccessToken;
+namespace Auth\Model;
 
-use Think\Model;
+use Common\Model\RelationModel;
 
-class AccessTokenModel extends Model {
+class AccessTokenModel extends RelationModel {
 
     protected $tableName = 'auth_access_token';
 

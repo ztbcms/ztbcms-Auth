@@ -39,7 +39,8 @@ class AuthService extends BaseService {
 
         if ($user) {
             //先检查时候有无access_token
-            $AuthAccessTokenDb = D('Auth\AuthAccessToken');
+            $AuthAccessTokenDb = D('Auth/AccessToken');
+
             $access_token = $AuthAccessTokenDb->where(['username' => $username, 'platform' => $platform])->find();
 
             if (empty($access_token)) {
@@ -124,7 +125,7 @@ class AuthService extends BaseService {
      * @return mixed
      */
     private static function findAccessToken($access_token, $platform) {
-        return D('Auth\AuthAccessToken')->where(['access_token' => $access_token, 'platform' => $platform])->find();
+        return D('Auth/AccessToken')->where(['access_token' => $access_token, 'platform' => $platform])->find();
     }
 
 
