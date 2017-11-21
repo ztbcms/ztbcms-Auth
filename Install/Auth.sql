@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS `cms_auth_access_token`;
-CREATE TABLE `fch_auth_access_token` (
+CREATE TABLE `cms_auth_access_token` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `nickname` varchar(32) NOT NULL DEFAULT '',
   `userid` int(11) NOT NULL,
