@@ -34,10 +34,10 @@ class BaseAndroidController extends CorsController {
                 $this->username = $access_token_record['username'];
                 $this->access_token = $access_token_record['access_token'];
             } else {
-                $this->ajaxReturn(self::createReturn(false, ['error' => 401, 'msg' => '请求未授权'], '请求未授权，请登录'));
+                $this->ajaxReturn(self::createReturn(false, ['errorCode' => 401, 'msg' => '请求未授权'], '请求未授权，请登录'));
             }
         } else {
-            $this->ajaxReturn(self::createReturn(false, ['error' => 401, 'msg' => '请求未授权'], '请求未授权，请登录'));
+            $this->ajaxReturn(self::createReturn(false, ['errorCode' => 401, 'msg' => '请求未授权'], '请求未授权，请登录'));
         }
     }
 }
