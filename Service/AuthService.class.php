@@ -17,7 +17,7 @@ class AuthService extends BaseService {
     /**
      * 请求头
      */
-    const HTTP_HEADER_ACCESS_TOKEN = 'auth_access_token';
+    const HTTP_HEADER_ACCESS_TOKEN = 'Ztbtoken';
 
     /**
      * 用户授权认证
