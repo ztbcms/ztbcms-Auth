@@ -51,7 +51,7 @@ class AuthService extends BaseService {
                     'nickname' => $user['nickname'],
                     'expired_time' => self::getExpiredTime(),
                     'create_time' => time(),
-                    'platform' => self::getPlatform(),
+                    'platform' => $platform,
                     'access_token' => self::makeAccessToken()
                 ];
 
