@@ -16,16 +16,14 @@ class CorsController extends Base {
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
             header('Access-Control-Allow-Origin: *');
             header('Access-Control-Allow-Methods: *');
-            header('Access-Control-Allow-Headers: Ztbtoken'); //不能设置为 *，必须指定
+            header('Access-Control-Allow-Headers: Ztbtoken,StoreId,Content-Type'); //不能设置为 *，必须指定
             header('Access-Control-Max-Age: 86400'); // cache for 1 day
 
             exit();
         }
-
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: *');
-        header('Access-Control-Allow-Headers: Ztbtoken'); //不能设置为 *，必须指定
-
+        header('Access-Control-Allow-Headers: Ztbtoken,StoreId,Content-Type'); //不能设置为 *，必须指定
         parent::_initialize();
     }
 
