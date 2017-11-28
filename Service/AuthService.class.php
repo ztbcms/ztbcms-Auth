@@ -18,6 +18,7 @@ class AuthService extends BaseService {
      * 请求头
      */
     const HTTP_HEADER_ACCESS_TOKEN = 'Ztbtoken';
+    const HTTP_HEADER_STORE_ID = 'StoreId';
 
     /**
      * 用户授权认证
@@ -36,7 +37,6 @@ class AuthService extends BaseService {
         } else {
             $user = service("Passport")->getLocalUser($username, $password);
         }
-
         if ($user) {
             //先检查时候有无access_token
             $AuthAccessTokenDb = D('Auth/AccessToken');
@@ -51,7 +51,7 @@ class AuthService extends BaseService {
                     'nickname' => $user['nickname'],
                     'expired_time' => self::getExpiredTime(),
                     'create_time' => time(),
-                    'platform' => self::getPlatform(),
+                    'platform' => $platform,
                     'access_token' => self::makeAccessToken()
                 ];
 

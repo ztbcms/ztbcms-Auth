@@ -17,14 +17,25 @@ class LoginController extends CorsController {
     /**
      * 安卓平台登录
      */
-    function android(){
+    function android() {
         $username = I('post.username');
         $password = I('post.password');
 
         $result = AuthService::auth($username, $password, AuthService::PLATFORM_ANDROID);
-        if($result['status']){
+        if ($result['status']) {
             $this->ajaxReturn(self::createReturn(true, $result['data'], '登陆成功'));
-        }else{
+        } else {
+            $this->ajaxReturn(self::createReturn(false, null, $result['msg']));
+        }
+    }
+
+    function web() {
+        $username = I('post.username');
+        $password = I('post.password');
+        $result = AuthService::auth($username, $password, AuthService::PLATFORM_PC_Web);
+        if ($result['status']) {
+            $this->ajaxReturn(self::createReturn(true, $result['data'], '登陆成功'));
+        } else {
             $this->ajaxReturn(self::createReturn(false, null, $result['msg']));
         }
     }
