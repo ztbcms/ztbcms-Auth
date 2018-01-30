@@ -3,7 +3,7 @@
 
 return array(
 	//模块名称
-	'modulename' => '授权',
+	'modulename' => '授权管理',
 	//图标
 	'icon' => 'https://dn-coding-net-production-pp.qbox.me/e57af720-f26c-4f3b-90b9-88241b680b7b.png',
 	//模块简介
