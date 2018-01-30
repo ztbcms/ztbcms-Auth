@@ -144,12 +144,13 @@ class AuthService extends BaseService {
      * @param int $now
      * @return int
      */
-    private static function getExpiredTime($now = 0) {
+    static function getExpiredTime($now = 0) {
         if (empty($now)) {
             $now = time();
         }
 
-        return $now + 30 * 24 * 60 * 60;
+        $max_life_time = C('AUTH_TOKEN_MAX_LIFE_TIME');
+        return $now + $max_life_time;
     }
 
     private static function getPlatform() {
