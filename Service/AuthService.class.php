@@ -52,7 +52,7 @@ class AuthService extends BaseService {
                     'nickname' => $user['nickname'],
                     'expired_time' => self::getExpiredTime(),
                     'create_time' => time(),
-                    'platform' => self::getPlatform(),
+                    'platform' => $platform,
                     'access_token' => self::makeAccessToken()
                 ];
 
@@ -150,12 +150,10 @@ class AuthService extends BaseService {
             $now = time();
         }
 
-        $max_life_time = C('AUTH_TOKEN_MAX_LIFE_TIME');
-        return $now + $max_life_time;
-    }
+        $config = require(APP_PATH . 'Auth/Conf/config.php');
+        $max_life_time = $config['AUTH_TOKEN_MAX_LIFE_TIME'];
 
-    private static function getPlatform() {
-        return self::PLATFORM_ANDROID;
+        return $now + $max_life_time;
     }
 
     /**

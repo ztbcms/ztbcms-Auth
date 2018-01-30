@@ -5,5 +5,5 @@
  */
 
 return [
-    'AUTH_TOKEN_MAX_LIFE_TIME' => 30 * 24 * 50 * 60 //Token最大有效期
+    'AUTH_TOKEN_MAX_LIFE_TIME' => 30 * 24 * 60 * 60 //Token最大有效期
 ];
