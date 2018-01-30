@@ -21,7 +21,7 @@ class LoginController extends CorsController {
         $username = I('post.username');
         $password = I('post.password');
 
-        $result = AuthService::auth($username, $password, AuthService::PLATFORM_ANDROID);
+        $result = AuthService::auth($username, $password, AuthService::PLATFORM_WEB);
         if($result['status']){
             $this->ajaxReturn(self::createReturn(true, $result['data'], '登陆成功'));
         }else{

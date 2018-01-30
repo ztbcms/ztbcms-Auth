@@ -12,7 +12,8 @@ class AuthService extends BaseService {
 
     //授权客户端，一个客户端一个token
     const PLATFORM_ANDROID = 'Android';
-    const PLATFORM_PC_Web = 'PC_Web';
+    const PLATFORM_IOS = 'iOS';
+    const PLATFORM_WEB = 'Web';
 
     /**
      * 请求头
@@ -163,7 +164,7 @@ class AuthService extends BaseService {
      * @param int $len 产生字符串的长度
      * @return string 随机字符串
      */
-    private function genRandomString($len = 32) {
+    private static function genRandomString($len = 32) {
         $chars = array(
             "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
             "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
