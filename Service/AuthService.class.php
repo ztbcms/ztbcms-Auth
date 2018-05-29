@@ -93,7 +93,20 @@ class AuthService extends BaseService {
      * @return string
      */
     static function makeAccessToken() {
-        return self::genRandomString(64);
+        return self::genRandomString(128);
+    }
+
+    /**
+     * 生成 login_code
+     *
+     * @param $platform
+     * @param $user_id
+     * @return array
+     */
+    static function makeLoginCode($platform, $user_id){
+        $login_code = self::genRandomString(16);
+        D('Auth/AccessToken')->where(['platform' => $platform, 'userid' => $user_id])->save(['login_code' => $login_code]);
+        return self::createReturn(true, $login_code);
     }
 
     /**
@@ -101,10 +114,11 @@ class AuthService extends BaseService {
      *
      * @param $access_token
      * @param $platform
+     * @param $ignorePlatform
      * @return array
      */
-    static function checkAccessToken($access_token, $platform) {
-        $record = self::findAccessToken($access_token, $platform);
+    static function checkAccessToken($access_token, $platform, $ignorePlatform = false) {
+        $record = self::findAccessToken($access_token, $platform, $ignorePlatform);
         if (!$record) {
             return self::createReturn(false, null, '暂无访问凭证');
         }
@@ -121,12 +135,17 @@ class AuthService extends BaseService {
     /**
      * 查找访问凭证
      *
-     * @param string $access_token 访问凭证
-     * @param string $platform     授权平台
+     * @param string $access_token  访问凭证
+     * @param string $platform      授权平台
+     * @param bool $ignorePlatform  是否忽略平台
      * @return mixed
      */
-    private static function findAccessToken($access_token, $platform) {
-        return D('Auth/AccessToken')->where(['access_token' => $access_token, 'platform' => $platform])->find();
+    private static function findAccessToken($access_token, $platform, $ignorePlatform = false) {
+        if($ignorePlatform){
+            return D('Auth/AccessToken')->where(['access_token' => $access_token])->find();
+        }else{
+            return D('Auth/AccessToken')->where(['access_token' => $access_token, 'platform' => $platform])->find();
+        }
     }
 
 
