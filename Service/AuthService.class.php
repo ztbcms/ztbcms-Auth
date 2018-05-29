@@ -93,7 +93,7 @@ class AuthService extends BaseService {
      * @return string
      */
     static function makeAccessToken() {
-        return self::genRandomString(64);
+        return self::genRandomString(128);
     }
 
     /**
