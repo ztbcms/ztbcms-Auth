@@ -97,6 +97,19 @@ class AuthService extends BaseService {
     }
 
     /**
+     * 生成 login_code
+     *
+     * @param $platform
+     * @param $user_id
+     * @return array
+     */
+    static function makeLoginCode($platform, $user_id){
+        $login_code = self::genRandomString(16);
+        D('Auth/AccessToken')->where(['platform' => $platform, 'userid' => $user_id])->save(['login_code' => $login_code]);
+        return self::createReturn(true, $login_code);
+    }
+
+    /**
      * 检查授权凭证
      *
      * @param $access_token
