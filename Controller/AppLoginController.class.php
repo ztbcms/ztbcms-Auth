@@ -86,4 +86,15 @@ class AppLoginController extends CorsController {
         }
         $this->ajaxReturn($res);
     }
+
+    /**
+     * 模拟前端登录页面
+     */
+    public function login(){
+        $login_code = I('get.login_code');
+        $this->assign('login_code', $login_code);
+        $redirect = I('get.redirect');
+        $this->assign('redirect', $redirect);
+        $this->display();
+    }
 }
