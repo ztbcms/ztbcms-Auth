@@ -21,7 +21,8 @@ class OpenPlatformService extends BaseService {
             return self::createReturn(false, null, '找不到应用');
         }
         $app_secret = M('AuthOpenPlatform')->where(['app_id' => $app_id])->getField('app_secret');
-        if($app_secret){
+        $is_allow_auth = M('AuthOpenPlatform')->where(['app_id' => $app_id])->getField('is_allow_auth');
+        if($app_secret && $is_allow_auth){
             return self::createReturn(true, $app_secret, '获取成功');
         }
         return self::createReturn(false, null, '找不到应用');
