@@ -32,7 +32,7 @@ class CheckDataController extends CorsController{
         if(!$sign){
             $this->ajaxReturn(self::createReturn(false, null, '签名错误'));
         }
-        $local_sign = OpenPlatformService::getSign($data, $app_secret['data']);
+        $local_sign = OpenPlatformService::getSign($data, $app_secret['data'])['data'];
         if($local_sign != $sign){
             $this->ajaxReturn(self::createReturn(false, null, '签名错误'));
         }
