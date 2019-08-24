@@ -45,12 +45,18 @@ class OpenPlatformController extends AdminBase {
         $this->ajaxReturn($res);
     }
 
+    /**
+     * 重置密钥
+     */
     public function resetAppSecret(){
         $id = I('post.id');
         $res = OpenPlatformService::resetAppSecret($id);
         $this->ajaxReturn($res);
     }
 
+    /**
+     * 更新
+     */
     public function updateOpenAuth(){
         $id = I('post.id');
         $value = I('post.value');
