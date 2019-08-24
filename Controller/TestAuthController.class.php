@@ -15,7 +15,7 @@ class TestAuthController extends AuthorizedController {
      * 已授权的可以看到下面文字
      */
     function test(){
-        echo 'I have authorized!';
+        echo '我已授权通过！';
     }
 
 }

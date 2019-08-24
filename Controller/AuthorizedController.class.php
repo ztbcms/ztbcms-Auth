@@ -26,13 +26,19 @@ class AuthorizedController extends CorsController {
      */
     public $accessToken = '';
 
+    /**
+     * 授权平台【请按需覆盖这个值】
+     * @var string
+     */
+    protected $auth_paltform = AuthService::PLATFORM_WEB;
+
     protected function _initialize() {
         parent::_initialize();
 
         $access_token = $_SERVER[strtoupper('HTTP_' . AuthService::HTTP_HEADER_ACCESS_TOKEN)];
 
         if ($access_token) {
-            $res = AuthService::checkAccessToken($access_token, AuthService::PLATFORM_WEB);
+            $res = AuthService::checkAccessToken($access_token, $this->auth_paltform);
             if ($res['status']) {
                 $access_token_record = $res['data'];
                 $this->userInfo = [

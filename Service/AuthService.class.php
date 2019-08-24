@@ -18,17 +18,17 @@ class AuthService extends BaseService {
     /**
      * 请求头
      */
-    const HTTP_HEADER_ACCESS_TOKEN = 'Ztbtoken';
+    const HTTP_HEADER_ACCESS_TOKEN = 'Token';
 
     /**
      * 用户授权认证
      *
-     * TODO 控制用户授权频率(防止暴力破解?)
+     * TODO 控制用户授权频率(防止暴力破解)
      *
-     * @param        $username
+     * @param string $username
      * @param string $password
      * @param string $platform 授权平台
-     * @param bool   $ignorePassword
+     * @param bool   $ignorePassword 是否忽略验证密码
      * @return array
      */
     static function auth($username, $password, $platform, $ignorePassword = false) {
