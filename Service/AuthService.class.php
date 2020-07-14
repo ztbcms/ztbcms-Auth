@@ -47,13 +47,15 @@ class AuthService extends BaseService {
             if (empty($access_token)) {
                 //没有，则生成新的access_token
                 $data = [
-                    'userid' => $user['userid'],
-                    'username' => $user['username'],
-                    'nickname' => $user['nickname'],
+                    'userid'       => $user['userid'],
+                    'username'     => $user['username'],
+                    'nickname'     => $user['nickname'],
                     'expired_time' => self::getExpiredTime(),
-                    'create_time' => time(),
-                    'platform' => $platform,
-                    'access_token' => self::makeAccessToken()
+                    'create_time'  => time(),
+                    'platform'     => $platform,
+                    'access_token' => self::makeAccessToken(),
+                    'ip'           => get_client_ip(0,true),
+                    'user_agent'   => $_SERVER['HTTP_USER_AGENT'],
                 ];
 
                 $res = $AuthAccessTokenDb->add($data);
@@ -63,7 +65,9 @@ class AuthService extends BaseService {
                 $data = [
                     'access_token' => self::makeAccessToken(),
                     'expired_time' => self::getExpiredTime(),
-                    'nickname' => $user['nickname']
+                    'nickname'     => $user['nickname'],
+                    'ip'           => get_client_ip(0,true),
+                    'user_agent'   => $_SERVER['HTTP_USER_AGENT']
                 ];
 
                 $res = $AuthAccessTokenDb->where(['id' => $access_token['id']])->save($data);
@@ -71,9 +75,9 @@ class AuthService extends BaseService {
 
             if ($res) {
                 $ret = [
-                    'userid' => $user['userid'],
-                    'username' => $user['username'],
-                    'nickname' => $user['nickname'],
+                    'userid'       => $user['userid'],
+                    'username'     => $user['username'],
+                    'nickname'     => $user['nickname'],
                     'access_token' => $data['access_token']
                 ];
 

@@ -9,6 +9,8 @@ CREATE TABLE `cms_auth_access_token` (
   `expired_time` int(11) NOT NULL,
   `create_time` int(11) DEFAULT NULL,
   `login_code` varchar(16) NOT NULL DEFAULT '',
+  `ip` varchar(255) NOT NULL DEFAULT '',
+  `user_agent` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `access_token` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
