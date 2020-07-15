@@ -15,15 +15,30 @@ use Auth\Service\AuthService;
 class LoginController extends CorsController {
 
     /**
-     * 安卓平台登录
+     * web平台登录
      */
-    function android(){
+    function web(){
         $username = I('post.username');
         $password = I('post.password');
 
         $result = AuthService::auth($username, $password, AuthService::PLATFORM_WEB);
         if($result['status']){
-            $this->ajaxReturn(self::createReturn(true, $result['data'], '登陆成功'));
+            $this->ajaxReturn(self::createReturn(true, $result['data'], '登录成功'));
+        }else{
+            $this->ajaxReturn(self::createReturn(false, null, $result['msg']));
+        }
+    }
+
+    /**
+     * android平台登录
+     */
+    function android(){
+        $username = I('post.username');
+        $password = I('post.password');
+
+        $result = AuthService::auth($username, $password, AuthService::PLATFORM_ANDROID);
+        if($result['status']){
+            $this->ajaxReturn(self::createReturn(true, $result['data'], '登录成功'));
         }else{
             $this->ajaxReturn(self::createReturn(false, null, $result['msg']));
         }

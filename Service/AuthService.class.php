@@ -18,17 +18,17 @@ class AuthService extends BaseService {
     /**
      * 请求头
      */
-    const HTTP_HEADER_ACCESS_TOKEN = 'Ztbtoken';
+    const HTTP_HEADER_ACCESS_TOKEN = 'Token';
 
     /**
      * 用户授权认证
      *
-     * TODO 控制用户授权频率(防止暴力破解?)
+     * TODO 控制用户授权频率(防止暴力破解)
      *
-     * @param        $username
+     * @param string $username
      * @param string $password
      * @param string $platform 授权平台
-     * @param bool   $ignorePassword
+     * @param bool   $ignorePassword 是否忽略验证密码
      * @return array
      */
     static function auth($username, $password, $platform, $ignorePassword = false) {
@@ -47,13 +47,15 @@ class AuthService extends BaseService {
             if (empty($access_token)) {
                 //没有，则生成新的access_token
                 $data = [
-                    'userid' => $user['userid'],
-                    'username' => $user['username'],
-                    'nickname' => $user['nickname'],
+                    'userid'       => $user['userid'],
+                    'username'     => $user['username'],
+                    'nickname'     => $user['nickname'],
                     'expired_time' => self::getExpiredTime(),
-                    'create_time' => time(),
-                    'platform' => $platform,
-                    'access_token' => self::makeAccessToken()
+                    'create_time'  => time(),
+                    'platform'     => $platform,
+                    'access_token' => self::makeAccessToken(),
+                    'ip'           => get_client_ip(0,true),
+                    'user_agent'   => $_SERVER['HTTP_USER_AGENT'],
                 ];
 
                 $res = $AuthAccessTokenDb->add($data);
@@ -63,7 +65,9 @@ class AuthService extends BaseService {
                 $data = [
                     'access_token' => self::makeAccessToken(),
                     'expired_time' => self::getExpiredTime(),
-                    'nickname' => $user['nickname']
+                    'nickname'     => $user['nickname'],
+                    'ip'           => get_client_ip(0,true),
+                    'user_agent'   => $_SERVER['HTTP_USER_AGENT']
                 ];
 
                 $res = $AuthAccessTokenDb->where(['id' => $access_token['id']])->save($data);
@@ -71,9 +75,9 @@ class AuthService extends BaseService {
 
             if ($res) {
                 $ret = [
-                    'userid' => $user['userid'],
-                    'username' => $user['username'],
-                    'nickname' => $user['nickname'],
+                    'userid'       => $user['userid'],
+                    'username'     => $user['username'],
+                    'nickname'     => $user['nickname'],
                     'access_token' => $data['access_token']
                 ];
 
@@ -93,7 +97,20 @@ class AuthService extends BaseService {
      * @return string
      */
     static function makeAccessToken() {
-        return self::genRandomString(64);
+        return self::genRandomString(128);
+    }
+
+    /**
+     * 生成 login_code
+     *
+     * @param $platform
+     * @param $user_id
+     * @return array
+     */
+    static function makeLoginCode($platform, $user_id){
+        $login_code = self::genRandomString(16);
+        D('Auth/AccessToken')->where(['platform' => $platform, 'userid' => $user_id])->save(['login_code' => $login_code]);
+        return self::createReturn(true, $login_code);
     }
 
     /**
@@ -101,10 +118,11 @@ class AuthService extends BaseService {
      *
      * @param $access_token
      * @param $platform
+     * @param $ignorePlatform
      * @return array
      */
-    static function checkAccessToken($access_token, $platform) {
-        $record = self::findAccessToken($access_token, $platform);
+    static function checkAccessToken($access_token, $platform, $ignorePlatform = false) {
+        $record = self::findAccessToken($access_token, $platform, $ignorePlatform);
         if (!$record) {
             return self::createReturn(false, null, '暂无访问凭证');
         }
@@ -121,12 +139,17 @@ class AuthService extends BaseService {
     /**
      * 查找访问凭证
      *
-     * @param string $access_token 访问凭证
-     * @param string $platform     授权平台
+     * @param string $access_token  访问凭证
+     * @param string $platform      授权平台
+     * @param bool $ignorePlatform  是否忽略平台
      * @return mixed
      */
-    private static function findAccessToken($access_token, $platform) {
-        return D('Auth/AccessToken')->where(['access_token' => $access_token, 'platform' => $platform])->find();
+    private static function findAccessToken($access_token, $platform, $ignorePlatform = false) {
+        if($ignorePlatform){
+            return D('Auth/AccessToken')->where(['access_token' => $access_token])->find();
+        }else{
+            return D('Auth/AccessToken')->where(['access_token' => $access_token, 'platform' => $platform])->find();
+        }
     }
 
 
